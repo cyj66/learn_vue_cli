@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        Promise.all([
+            new Promise((resolve,reject)=>{
+                setTimeout(()=>{
+                    resolve({index:1,name:"111"});
+                },2000)
+            }),
+            new Promise((resolve,reject)=>{
+                setTimeout(()=>{
+                    resolve({index:2,name:"222"});
+                },1000)
+            })
+        ]).then(results=>{
+            console.log(results);   //results是一个数组
+        })
+    </script>
+</body>
+</html>

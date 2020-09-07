@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+    new Promise((resolve,reject)=>{
+        setTimeout(() => {
+            resolve("第1层，无简写");
+        }, 1000);
+    }).then(str1=>{
+        console.log(str1);
+
+        return new Promise(resolve=>{     
+            resolve("第2层，没用到reject可以省略");
+        })
+    }).then(str2=>{
+        console.log(str2);
+
+        return Promise.resolve("第3层，直接调用resolve函数");   //链式调用
+    }).then(str3=>{
+        console.log(str3);
+
+        return "第4层，全部省略直接返回";
+    }).then(str4=>{
+        console.log(str4);
+
+        //reject同理，最后搭配catch
+        //return Promise.reject("err");
+        throw "err";     //抛出异常
+    }).catch(str5=>console.log(str5))
+
+
+    </script>
+</body>
+</html>

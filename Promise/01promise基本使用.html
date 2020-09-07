@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+    //里面两个参数也是函数,解决/拒绝，没用promise时疯狂嵌套
+    new Promise((resolve,reject)=>{
+        setTimeout(()=>{
+            console.log("hello 1");
+            console.log("hello 1");
+            console.log("hello 1");
+
+            setTimeout(()=>{
+                console.log("hello 2");
+                console.log("hello 2");
+                console.log("hello 2");
+
+                setTimeout(()=>{
+                    console.log("hello 3");
+                    console.log("hello 3");
+                    console.log("hello 3");
+                },1000)
+            },1000)
+        },1000)
+    })
+
+    //用promise,嵌套变线性，链式编程,网络请求代码和处理代码进行分离
+    new Promise((resolve,reject)=>{
+        //1.第一次网络请求的代码
+        setTimeout(()=>{
+            resolve();    
+        },1000)
+    }).then(()=>{
+        //2.第一次拿到结果的代码
+        console.log("hello 1");
+        console.log("hello 1");
+        console.log("hello 1");
+        
+        return new Promise((resolve,reject)=>{
+            setTimeout(() => {
+                resolve();
+            }, 1000);
+        })
+    }).then(()=>{
+        console.log("hello 2");
+        console.log("hello 2");
+        console.log("hello 2");
+
+        return new Promise((resolve,reject)=>{   
+            setTimeout(() => {
+                resolve();
+            }, 1000);
+        })
+    }).then(()=>{
+        console.log("hello 3");
+        console.log("hello 3");
+        console.log("hello 3");
+    })
+
+    //3.成功与否，就是屠宰与手术的区别
+    new Promise((resolve,reject)=>{
+        setTimeout(() => {
+            //resolve("success");    //resolve里可以传实参，会对应下面then里的形参,reject同
+            reject("error");
+        }, 4000);
+    }).then((suc)=>{
+        console.log(suc);
+        console.log(suc);
+        console.log(suc);
+    }).catch((err)=>{
+        console.log(err);
+        console.log(err);
+        console.log(err);
+    })
+
+    //4.上面的另外一种写法
+    new Promise((resolve,reject)=>{
+        setTimeout(()=>{
+            //resolve("yes");
+            reject("no");
+        },5000)
+    }).then(y=>console.log(y),n=>console.log(n));  //只在then中用逗号隔开
+    </script>
+
+</body>
+</html>
